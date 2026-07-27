@@ -45,7 +45,7 @@ For your second milestone, explain what you've worked on since your previous mil
 
 **Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
 
-<iframe width="560" height="315" src="[https://www.youtube.com/embed/CaCazFBhYKs](https://youtu.be/l__13xIZgQo?si=E1r4nhtPdPXO_9Nm)" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/l__13xIZgQo?si=VUcc7zlaqovNP_uv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
   For my first milestone, I focused mainly on the hardware. I followed the tutorial to build the robot chassis by attaching the wheels and motors. I also wired the motors, motor driver, and Arduino UNO together.
 
