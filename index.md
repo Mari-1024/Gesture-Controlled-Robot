@@ -1,4 +1,3 @@
-Gesture Controlled Robot
 Hello! For my project I chose the Gesture Controlled Robot! It is a robot car that is controlled by gestures created by a hand module. The robot and hand are connected with bluetooth, and programmed on Arduino IDE with C++. This is my first ever electronic project so everything is still very new to me. But I am having a very fun time getting to learn with my instructors and classmates. This is my progress so far!
 
 You should comment out all portions of your portfolio that you have not completed yet, as well as any instructions:
