@@ -4,7 +4,7 @@ Hello! For my project I chose the Gesture Controlled Robot! It is a robot car th
 |:--:|:--:|:--:|:--:|
 | Mari I | Forest Hills High School | Electrical Engineering | Incoming Senior
 
-<img width="1250" height="792" alt="Screenshot 2026-08-06 at 3 52 54 PM" src="https://github.com/user-attachments/assets/2c8234fc-4481-4c50-a390-3f76fe1e541e" />
+<img width="1000" height="500" alt="Screenshot 2026-08-06 at 3 52 54 PM" src="https://github.com/user-attachments/assets/2c8234fc-4481-4c50-a390-3f76fe1e541e" />
 
 # Final Milestone
 
@@ -140,7 +140,7 @@ void readMPU6050() {
 }
 ```
 
-#Robot Car Code
+# Robot Car Code
 
 ```c++
 #include <SoftwareSerial.h>
@@ -273,7 +273,7 @@ void Stop()
 }
 ```
 
-#Camera Code
+# Camera Code
 ```c++
 #include "esp_camera.h"
 #include <WiFi.h>
@@ -380,7 +380,7 @@ delay(50);
 }
 ```
 
-#Display Screen Code
+# Display Screen Code
 ```c++
 #include <SPI.h>
 #include <ArduinoWebsockets.h>
