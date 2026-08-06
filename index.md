@@ -1,15 +1,10 @@
-<img width="2532" height="1170" alt="IMG_2246" src="https://github.com/user-attachments/assets/76c34ceb-42da-45c2-960a-f39fab97517b" />
-
 Hello! For my project I chose the Gesture Controlled Robot! It is a robot car that is controlled by gestures created by a hand module. The robot and hand are connected with bluetooth, and programmed on Arduino IDE with C++. An accelerometer on the hand module measures tilts in the x and y direction, prompting the robot car to move it's motors in certain directions.
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
 | Mari I | Forest Hills High School | Electrical Engineering | Incoming Senior
 
-**Replace the BlueStamp logo below with an image of yourself and your completed project. Follow the guide [here](https://tomcam.github.io/least-github-pages/adding-images-github-pages-site.html) if you need help.**
-
-![Headstone Image](logo.svg)
-<img width="2532" height="1170" alt="IMG_2246" src="https://github.com/user-attachments/assets/0bd74982-d243-46ac-9dc3-93b8fc6bf48e" />
+<img width="1250" height="792" alt="Screenshot 2026-08-06 at 3 52 54 PM" src="https://github.com/user-attachments/assets/2c8234fc-4481-4c50-a390-3f76fe1e541e" />
 
 # Final Milestone
 
