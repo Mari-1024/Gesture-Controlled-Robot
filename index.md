@@ -41,19 +41,239 @@ That is my progress so far! Next, I would like to work on connecting the Bluetoo
 # Schematics 
 Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. 
 
-# Code
-Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. 
+# Hand Module Code
 
 ```c++
+#include <Wire.h>
+#define BT_Serial Serial1
+
+const int MPU_ADDR = 0x68;
+
+int16_t AcX, AcY, AcZ;
+int X_value;
+int Y_value;
+int flag = 0;
+
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  Serial.println("Hello World!");
+
+  Serial.begin(38400);      // Serial Monitor
+  BT_Serial.begin(38400);    // HC-05
+
+  Wire.begin();
+
+  // Wake up MPU6050
+  Wire.beginTransmission(MPU_ADDR);
+  Wire.write(0x6B);
+  Wire.write(0);
+  Wire.endTransmission(true);
+
+  delay(500);
+
+  Serial.println("MPU6050 Ready");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
 
+  readMPU6050();
+
+  Serial.print("X: ");
+  Serial.print(X_value);
+
+  Serial.print("  Y: ");
+  Serial.println(Y_value);
+
+  // Forward (tilt forward farther)
+  if (X_value < 45 && flag == 0) {
+    flag = 1;
+    BT_Serial.write('f');
+    Serial.println("Forward");
+  }
+
+  // Backward (tilt backward farther)
+  else if (X_value > 135 && flag == 0) {
+    flag = 1;
+    BT_Serial.write('b');
+    Serial.println("Backward");
+  }
+
+  // Left
+  else if (Y_value < 45 && flag == 0) {
+    flag = 1;
+    BT_Serial.write('l');
+    Serial.println("Left");
+  }
+
+  // Right
+  else if (Y_value > 135 && flag == 0) {
+    flag = 1;
+    BT_Serial.write('r');
+    Serial.println("Right");
+  }
+
+  // Larger neutral zone = stop
+  else if (X_value > 60 && X_value < 120 &&
+           Y_value > 60 && Y_value < 120 &&
+           flag == 1) {
+    flag = 0;
+    BT_Serial.write('s');
+    Serial.println("Stop");
+  }
+  delay(100);
+}
+
+void readMPU6050() {
+  Wire.beginTransmission(MPU_ADDR);
+  Wire.write(0x3B);
+  Wire.endTransmission(false);
+
+  Wire.requestFrom(MPU_ADDR, 6, true);
+
+  AcX = Wire.read() << 8 | Wire.read();
+  AcY = Wire.read() << 8 | Wire.read();
+  AcZ = Wire.read() << 8 | Wire.read();
+
+  // Convert raw accelerometer values
+  X_value = map(AcX, -17000, 17000, 0, 180);
+  Y_value = map(AcY, -17000, 17000, 0, 180);
+
+  X_value = constrain(X_value, 0, 180);
+  Y_value = constrain(Y_value, 0, 180);
+
+}
+```
+
+#Robot Car Code
+
+```c++
+#include <SoftwareSerial.h>
+SoftwareSerial BT_Serial(2, 3);   // RX, TX
+
+// Motor Driver Pins
+
+#define ENA 5
+#define IN1 6
+#define IN2 7
+#define ENB 10
+#define IN3 8
+#define IN4 9
+
+char bt_data = 's';
+
+int Speed = 180;
+
+void setup()
+{
+    Serial.begin(9600);
+    BT_Serial.begin(38400);
+
+    pinMode(ENA, OUTPUT);
+    pinMode(IN1, OUTPUT);
+    pinMode(IN2, OUTPUT);
+    pinMode(ENB, OUTPUT);
+    pinMode(IN3, OUTPUT);
+    pinMode(IN4, OUTPUT);
+
+    Stop();
+
+    delay(500);
+
+    Serial.println("Robot Ready");
+}
+
+void loop()
+{
+    if (BT_Serial.available() > 0)
+    {
+        bt_data = BT_Serial.read();
+
+        Serial.print("Received: ");
+        Serial.println(bt_data);
+    }
+
+    if (bt_data == 'f')
+    {
+        forward();
+        Speed = 180;
+    }
+
+    else if (bt_data == 'b')
+    {
+        backward();
+        Speed = 180;
+    }
+
+    else if (bt_data == 'l')
+    {
+        turnLeft();
+        Speed = 120;
+    }
+
+    else if (bt_data == 'r')
+    {
+        turnRight();
+        Speed = 120;
+    }
+
+    else if (bt_data == 's')
+    {
+        Stop();
+    }
+
+    analogWrite(ENA, Speed);
+    analogWrite(ENB, Speed);
+
+    delay(50);
+}
+
+// Forward
+
+void forward()
+{
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+}
+
+// Backward
+
+void backward()
+{
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+}
+
+// Turn Right (switched)
+void turnRight()
+{
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+}
+
+// Turn Left (switched)
+void turnLeft()
+{
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+}
+
+void Stop()
+{
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, LOW);
+
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, LOW);
 }
 ```
 
