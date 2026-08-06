@@ -149,7 +149,6 @@ void readMPU6050() {
 SoftwareSerial BT_Serial(2, 3);   // RX, TX
 
 // Motor Driver Pins
-
 #define ENA 5
 #define IN1 6
 #define IN2 7
@@ -226,7 +225,6 @@ void loop()
 }
 
 // Forward
-
 void forward()
 {
     digitalWrite(IN1, HIGH);
@@ -237,7 +235,6 @@ void forward()
 }
 
 // Backward
-
 void backward()
 {
     digitalWrite(IN1, LOW);
@@ -267,6 +264,7 @@ void turnLeft()
     digitalWrite(IN4, HIGH);
 }
 
+//Stop
 void Stop()
 {
     digitalWrite(IN1, LOW);
@@ -274,6 +272,207 @@ void Stop()
 
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, LOW);
+}
+```
+
+#Camera Code
+```c++
+#include "esp_camera.h"
+#include <WiFi.h>
+#include <ArduinoWebsockets.h>
+
+#define CAMERA_MODEL_AI_THINKER
+
+#include "camera_pins.h"
+
+const char* ssid = "esp32net";
+const char* password = "123456789";
+
+const char* websockets_server_host = "192.168.4.1"; 
+const uint16_t websockets_server_port = 80;
+
+using namespace websockets;
+WebsocketsClient client;
+
+void setup() {
+  Serial.begin(115200);
+  Serial.setDebugOutput(true);
+  Serial.println();
+
+  camera_config_t config;
+  config.ledc_channel = LEDC_CHANNEL_0;
+  config.ledc_timer = LEDC_TIMER_0;
+  config.pin_d0 = Y2_GPIO_NUM;
+  config.pin_d1 = Y3_GPIO_NUM;
+  config.pin_d2 = Y4_GPIO_NUM;
+  config.pin_d3 = Y5_GPIO_NUM;
+  config.pin_d4 = Y6_GPIO_NUM;
+  config.pin_d5 = Y7_GPIO_NUM;
+  config.pin_d6 = Y8_GPIO_NUM;
+  config.pin_d7 = Y9_GPIO_NUM;
+  config.pin_xclk = XCLK_GPIO_NUM;
+  config.pin_pclk = PCLK_GPIO_NUM;
+  config.pin_vsync = VSYNC_GPIO_NUM;
+  config.pin_href = HREF_GPIO_NUM;
+  config.pin_sscb_sda = SIOD_GPIO_NUM;
+  config.pin_sscb_scl = SIOC_GPIO_NUM;
+  config.pin_pwdn = PWDN_GPIO_NUM;
+  config.pin_reset = RESET_GPIO_NUM;
+  config.xclk_freq_hz = 20000000;
+  config.pixel_format = PIXFORMAT_JPEG;
+  //init with high specs to pre-allocate larger buffers
+  if(psramFound()){
+    config.frame_size = FRAMESIZE_QVGA; // 320x240
+    config.jpeg_quality = 20;
+    config.fb_count = 2;
+  } else {
+    config.frame_size = FRAMESIZE_QVGA;
+    config.jpeg_quality = 20;
+    config.fb_count = 1;
+  }
+
+  // camera init
+  esp_err_t err = esp_camera_init(&config);
+  if (err != ESP_OK) {
+    Serial.printf("Camera init failed with error 0x%x", err);
+    return;
+  }
+  sensor_t *s = esp_camera_sensor_get();
+  s->set_vflip(s, 1);
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+
+  Serial.print("Camera Ready! Use 'http://");
+  Serial.print(WiFi.localIP());
+  Serial.println("' to connect");
+
+  while(!client.connect("ws://192.168.4.1:80")){
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("Socket Connected!");  
+}
+
+void loop() {
+  camera_fb_t *fb = NULL;
+  esp_err_t res = ESP_OK;
+  fb = esp_camera_fb_get();
+  if(!fb){
+    Serial.println("Camera capture failed");
+    esp_camera_fb_return(fb);
+    return;
+  }
+
+  size_t fb_len = 0;
+  if(fb->format != PIXFORMAT_JPEG){
+    Serial.println("Non-JPEG data not implemented");
+    return;
+  }
+Serial.printf("JPEG = %d bytes\n", fb->len);
+client.sendBinary((const char*)fb->buf, fb->len);
+esp_camera_fb_return(fb);
+delay(50);
+}
+```
+
+#Display Screen Code
+```c++
+#include <SPI.h>
+#include <ArduinoWebsockets.h>
+#include <WiFi.h>
+
+#include <TJpg_Decoder.h>
+#include <TFT_eSPI.h>
+
+const char* ssid = "esp32net";
+const char* password = "123456789";
+
+using namespace websockets;
+WebsocketsServer server;
+WebsocketsClient client;
+
+TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
+
+bool tft_output(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap)
+{
+  // Stop further decoding as image is running off bottom of screen
+ if ( y >= tft.height() ) return 0;
+
+ // This function will clip the image block rendering automatically at the TFT boundaries
+ tft.pushImage(x, y, w, h, bitmap);
+
+ // This might work instead if you adapt the sketch to use the Adafruit_GFX library
+ // tft.drawRGBBitmap(x, y, bitmap, w, h);
+
+ // Return 1 to decode next block
+ return 1;
+}
+
+void setup() {
+ // put your setup code here, to run once:
+ Serial.begin(115200);
+ delay(1000);
+ tft.begin();
+ Serial.printf("Display = %d x %d\n", tft.width(), tft.height());
+
+ tft.fillScreen(TFT_RED);
+ delay(1000);
+ tft.fillScreen(TFT_GREEN);
+ delay(1000);
+ tft.fillScreen(TFT_BLUE);
+ delay(1000);
+ tft.setRotation(3);
+ tft.setTextColor(0xFFFF, 0x0000);
+ tft.fillScreen(TFT_RED);
+ tft.setSwapBytes(true); // We need to swap the colour bytes (endianess)
+
+ // The jpeg image can be scaled by a factor of 1, 2, 4, or 8
+ TJpgDec.setJpgScale(1);
+
+ // The decoder must be given the exact name of the rendering function above
+ TJpgDec.setCallback(tft_output);
+ Serial.println();
+ Serial.println("Setting AP...");
+ WiFi.softAP(ssid, password);
+
+ IPAddress IP = WiFi.softAPIP();
+ Serial.print("AP IP Address : ");
+ Serial.println(IP);
+
+ server.listen(80);
+}
+
+void loop() {
+ if(server.poll()){
+     client = server.accept();
+   }
+
+   if(client.available()){
+     client.poll();
+
+     WebsocketsMessage msg = client.readBlocking();
+     Serial.printf("Received = %d bytes\n", msg.length());
+     uint32_t t = millis();
+
+     // Get the width and height in pixels of the jpeg if you wish
+     uint16_t w = 0, h = 0;
+     TJpgDec.getJpgSize(&w, &h, (const uint8_t*)msg.c_str(), msg.length());
+     Serial.print("Width = "); Serial.print(w); Serial.print(", height = "); Serial.println(h);
+  
+     // Draw the image, top left at 0,0
+     TJpgDec.drawJpg(0, 0, (const uint8_t*)msg.c_str(), msg.length());
+  
+     // How much time did rendering take (ESP8266 80MHz 271ms, 160MHz 157ms, ESP32 SPI 120ms, 8bit parallel 105ms
+     t = millis() - t;
+     Serial.print(t); Serial.println(" ms");
+   } 
 }
 ```
 
