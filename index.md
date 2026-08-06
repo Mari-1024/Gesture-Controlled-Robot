@@ -1,10 +1,4 @@
-Hello! For my project I chose the Gesture Controlled Robot! It is a robot car that is controlled by gestures created by a hand module. The robot and hand are connected with bluetooth, and programmed on Arduino IDE with C++. This is my first ever electronic project so everything is still very new to me. But I am having a very fun time getting to learn with my instructors and classmates. This is my progress so far!
-
-You should comment out all portions of your portfolio that you have not completed yet, as well as any instructions:
-```HTML 
-<!--- This is an HTML comment in Markdown -->
-<!--- Anything between these symbols will not render on the published site -->
-```
+Hello! For my project I chose the Gesture Controlled Robot! It is a robot car that is controlled by gestures created by a hand module. The robot and hand are connected with bluetooth, and programmed on Arduino IDE with C++. An accelerometer on the hand module measures tilts in the x and y direction, prompting the robot car to move it's motors in certain directions.
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
@@ -16,16 +10,11 @@ You should comment out all portions of your portfolio that you have not complete
   
 # Final Milestone
 
-**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VcYvCaiRvsA?si=HAfj8h7XWsztrqDr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+Since my last milestone I have fully completed the base project! The robot and hand module operate wirelessly with no issues. For modifications I created a glove to place the hand module on. This is so that I can wear it, and it looked cooler! Another modification I added was a camera and screen. I planned to have a ESP-32 Camera mounted on the robot to stream where the robot was moving, and a ILI9341 TFT screen to display it from a distance. 
 
-For your final milestone, explain the outcome of your project. Key details to include are:
-- What you've accomplished since your previous milestone
-- What your biggest challenges and triumphs were at BSE
-- A summary of key topics you learned about
-- What you hope to learn in the future after everything you've learned at BSE
-
+The most challenging aspect of this milestone was debugging the screen and camera. I had to create its own wifi network with 2.4Ghz, and configuring between the camera and display was excruciatingly hard. Whether it was finding the right resolution, quality or frame rate I went through hundreds of lines of code trying to find that one error that was distorting my screen. In the end, I was able to find the bugs and have my screen display the camera's live footage. This took a toll on my mental state was well as my hope but It was able to teach a great lesson of perseverance. The struggles I faced throughout this project made me realize how much I love the satisfaction of overcoming it.
 
 
 # Second Milestone
