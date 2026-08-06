@@ -27,17 +27,18 @@ The biggest challenges were wiring the electronics, getting the Bluetooth module
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/l__13xIZgQo?si=VUcc7zlaqovNP_uv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-  For my first milestone, I focused mainly on the hardware. I followed the tutorial to build the robot chassis by attaching the wheels and motors. I also wired the motors, motor driver, and Arduino UNO together.
-
-I soon realized that the battery clips had the wrong connector to attach to my motor driver. While I was waiting for the correct parts to arrive, I was able to test each motor individually. Then, to get the Arduino UNO to control the motor driver, I wrote a sketch that allowed the motors to move forward. To power the UNO, I used the battery pack with the barrel jack attachment.
+For my first milestone, I focused mainly on the hardware. I followed the tutorial to build the robot chassis by attaching the wheels and motors. I also wired the motors, motor driver, and Arduino UNO together. I soon realized that the battery clips had the wrong connector to attach to my motor driver. While I was waiting for the correct parts to arrive, I was able to test each motor individually. Then, to get the Arduino UNO to control the motor driver, I wrote a sketch that allowed the motors to move forward. To power the UNO, I used the battery pack with the barrel jack attachment.
 
 To become more familiar with C++, I programmed my robot to perform a sequence of movements: repeat four times by moving forward and then turning right, perform a spin, move backward, and then move forward again. Once my new battery clip arrived, I completed many trial runs to perfect the sequence.
 
-That is my progress so far! Next, I would like to work on connecting the Bluetooth modules and perfecting the handheld controller module.
+That is my progress so far! Next, I would like to work on connecting the Bluetooth modules and perfecting the hand module.
 
 
-# Schematics 
-Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. 
+# Robot Car Schematics 
+<img width="841" height="713" alt="Screenshot 2026-08-03 at 11 59 32 AM" src="https://github.com/user-attachments/assets/8715b11c-f7d2-463f-95a3-669d70870b00" />
+
+# Hand Module Schematics
+<img width="670" height="544" alt="Screenshot 2026-08-03 at 11 47 05 AM" src="https://github.com/user-attachments/assets/35e091e9-647b-4a38-a8aa-b8103ef9c438" />
 
 # Hand Module Code
 
