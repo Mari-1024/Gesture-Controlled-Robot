@@ -494,6 +494,6 @@ void loop() {
 | DMM | Measures Voltage | $9.99 | <a href="https://www.amazon.com/dp/B0CXM242J1?ref=fed_asin_title&th=1"> Link </a> |
 
 # Other Resources/Examples
-- [Example 1](https://trashytuber.github.io/YimingJiaBlueStamp/)
-- [Example 2](https://sviatil0.github.io/Sviatoslav_BSE/)
-- [Example 3](https://arneshkumar.github.io/arneshbluestamp/)
+- [Project tutorial](https://www.hackster.io/embeddedlab786/hand-gesture-control-robot-via-bluetooth-94b13d)
+- [HC-05 connection tutorial](https://docs.google.com/document/d/1EpnEPulXQwPDSK-nKLohqPjpeXNteP2G/edit)
+- [ESP-32 Cam to Screen tutorial](https://www.youtube.com/watch?v=WB02i_E_joc)
