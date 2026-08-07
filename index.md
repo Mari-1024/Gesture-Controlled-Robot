@@ -497,3 +497,6 @@ void loop() {
 - [Project tutorial](https://www.hackster.io/embeddedlab786/hand-gesture-control-robot-via-bluetooth-94b13d)
 - [HC-05 connection tutorial](https://docs.google.com/document/d/1EpnEPulXQwPDSK-nKLohqPjpeXNteP2G/edit)
 - [ESP-32 Cam to Screen tutorial](https://www.youtube.com/watch?v=WB02i_E_joc)
+- [Buck converter explained YT video](https://www.youtube.com/watch?v=DXM_xiR0o1c)
+- [Breadboard tutorial](https://www.youtube.com/watch?v=W6mixXsn-Vc)
+- [Electronics basics YT video](https://www.youtube.com/watch?v=A0dLqyNh_RQ)
